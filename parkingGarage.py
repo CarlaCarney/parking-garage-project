@@ -40,15 +40,18 @@ class ParkingGarage():
             response = input('Would you like to purchase a ticket? (Y/N): ')
             if response.lower() == 'y':
                 self.takeTicket()
+                print(self.tickets)
+                print(self.parkingSpaces)
             if response.lower() == 'n':
-                print("Bye! Have a great day!")
-                break
-            else:
-                print("Invalid response. Please type either 'Y' or 'N' ")
-                self.runParkingGarage()
-                response2 = input("Ready to Leave? (Y/N): ")
-                if response2.lower() == 'y':
+                response2 = input("Ready to Leave? (Yes/No): ")
+                if response2.lower() == 'yes':
                     self.payForParking()
+                    self.leaveGarage()
+                    print(self.tickets)
+                    print(self.parkingSpaces)
+                if response2.lower() == 'no':
+                    print("Bye! Have a great day!")
+                    break
 
 
             
