@@ -46,9 +46,6 @@ class ParkingGarage():
             else:
                 print("Invalid response. Please type either 'Y' or 'N' ")
                 self.runParkingGarage()
-                response2 = input("Ready to Leave? (Y/N): ")
-                if response2.lower() == 'y':
-                    self.payForParking()
 
 
             
