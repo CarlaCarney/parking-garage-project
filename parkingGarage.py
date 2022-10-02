@@ -1,5 +1,3 @@
-
-
 class ParkingGarage():
 
     def __init__(self):
@@ -58,12 +56,12 @@ class ParkingGarage():
             print(f"\nWelcome to the parking garage!")
             response = input('\nWould you like to get a ticket ("Get"), pay for current ticket ("Pay") or leave ("Leave"): ')
             if response.lower() == 'get':
-                name = input('\nWhat is your name? ')
+                name = input('\nWhat is your name? ').lower()
                 self.takeTicket(name)
             elif response.lower() == 'pay':
                 response2 = input("\nReady to Leave? (Yes/No): ")
                 if response2.lower() == 'yes':
-                    name = input('\nWhat is your name? ')
+                    name = input('\nWhat is your name? ').lower()
                     self.payForParking(name)
                     self.leaveGarage(name)
                     continue
@@ -74,7 +72,7 @@ class ParkingGarage():
                     print("\nInvalid Input! Start again.")
                     continue 
             elif response.lower() == 'leave':
-                name = input('\nWhat is your name? ')
+                name = input('\nWhat is your name? ').lower()
                 self.leaveGarage(name)
                 continue 
             else:
