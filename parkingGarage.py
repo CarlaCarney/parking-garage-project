@@ -2,48 +2,52 @@
 
 class ParkingGarage():
 
-    def __init__(self, name):
+    def __init__(self):
         self.tickets = 9
         self.parkingSpaces = 9
         self.currentTicket = {}
-        self.name = name
 
-    def takeTicket(self):
+    def takeTicket(self, name):
         if self.tickets > 0:
-            print(f"\nWe currently have {self.tickets} spaces available! \n\nPrinting Ticket...You have ticket # {self.tickets}!")
-            self.currentTicket[self.tickets] = False            
+            print(f"\nHi {name}! We currently have {self.tickets} spaces available! \n\nPrinting Ticket...You have ticket # {self.tickets}!")
+            self.currentTicket[name] = {
+                'ticket': self.tickets,
+                'paid': False
+            }            
             self.tickets += -1
             self.parkingSpaces += -1
         else:
             print("\nSorry we have no parking spaces available at the moment!")
 
-    def payForParking(self):
+    def payForParking(self, name):
         try:
-            if self.currentTicket[self.tickets + 1] == False:
+            ticket = self.currentTicket[name]
+            if ticket['paid'] == False:
                 paid = input("\nPlease enter 15, to pay for ticket: ")
                 if paid == '15':
-                    print(f'\nYour ticket # {self.tickets + 1} has been paid and you have 15 minutes to leave!')
-                    self.currentTicket[self.tickets + 1] = True
+                    print(f'\nYour ticket # {ticket["ticket"]} has been paid and you have 15 minutes to leave!')
+                    ticket['paid'] = True
                     return
                 else:
                     print("\nSorry! Invalid Input, please enter 15!")
-                    self.payForParking()
+                    self.payForParking(name)
+            else:
+                print('\nYour ticket is already paid.')
         except:
             print("\nYou do not currently have a ticket!")
             self.runParkingGarage()
 
-    def leaveGarage(self):
+    def leaveGarage(self, name):
         try:
-            if self.currentTicket[self.tickets + 1] == True:
+            ticket = self.currentTicket[name]
+            if ticket['paid'] == True:
                 print('\nThank you, have a nice day!')
                 self.tickets += 1
                 self.parkingSpaces += 1
-            elif self.currentTicket[self.tickets + 1] == False:
-                print('\nPlease pay for your ticket!')
-                self.payForParking()            
+                self.currentTicket.pop(name)           
             else:
                 print('\nPlease pay for your ticket!')
-                self.payForParking()
+                self.payForParking(name)
         except:
             print('\nYou do not currently have your car parked here! You are free to leave! Goodbye!')
 
@@ -51,43 +55,35 @@ class ParkingGarage():
 
     def runParkingGarage(self):
         while True:
-            print(f"\nWelcome to the parking garage, {self.name.title()}!")
-            response = input('\nWould you like to get a ticket ("Get"), pay for current ticket ("Pay"), park your car ("Park") or leave ("Leave"): ')
+            print(f"\nWelcome to the parking garage!")
+            response = input('\nWould you like to get a ticket ("Get"), pay for current ticket ("Pay") or leave ("Leave"): ')
             if response.lower() == 'get':
-                self.takeTicket()
+                name = input('\nWhat is your name? ')
+                self.takeTicket(name)
             elif response.lower() == 'pay':
                 response2 = input("\nReady to Leave? (Yes/No): ")
                 if response2.lower() == 'yes':
-                    self.payForParking()
-                    self.leaveGarage()
-                    break
+                    name = input('\nWhat is your name? ')
+                    self.payForParking(name)
+                    self.leaveGarage(name)
+                    continue
                 if response2.lower() == 'no':
-                    print("Bye! Have a great day!")
-                    break
+                    print("\nOk, see you soon!")
+                    continue
                 else:
-                    print("Invalid Input! Please type 'Yes' or 'No'")
-                    self.runParkingGarage()
-            elif response.lower() == 'park':
-                if self.currentTicket:
-                    break
-                else:
-                    print('\nYou have not purschased a ticket yet!')
+                    print("\nInvalid Input! Start again.")
+                    continue 
             elif response.lower() == 'leave':
-                self.leaveGarage()
-                break
+                name = input('\nWhat is your name? ')
+                self.leaveGarage(name)
+                continue 
             else:
-                print("\nInvalid response. Please type either 'Get', 'Pay', 'Park' or 'Leave'")
+                print("\nInvalid response. Please type either 'Get', 'Pay', or 'Leave'")
 
 
 
             
 
-diante = ParkingGarage('diante')
-person2 = ParkingGarage('carla')
-person3 = ParkingGarage('steph')
-person4 = ParkingGarage('david')
+parkinggarage = ParkingGarage()
 
-diante.runParkingGarage()
-diante.runParkingGarage()
-
-
+parkinggarage.runParkingGarage()
