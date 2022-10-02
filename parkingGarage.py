@@ -7,11 +7,11 @@ class ParkingGarage():
 
     def takeTicket(self, name):
         if self.tickets > 0:
-            print(f"\nHi {name}! We currently have {self.tickets} spaces available! \n\nPrinting Ticket...You have ticket # {self.tickets}!")
+            print(f"\nHi {name.title()}! We currently have {self.tickets} spaces available! \n\nPrinting Ticket...You have ticket # {self.tickets}!")
             self.currentTicket[name] = {
                 'ticket': self.tickets,
                 'paid': False
-            }            
+            }           
             self.tickets += -1
             self.parkingSpaces += -1
         else:
@@ -42,12 +42,13 @@ class ParkingGarage():
                 print('\nThank you, have a nice day!')
                 self.tickets += 1
                 self.parkingSpaces += 1
-                self.currentTicket.pop(name)           
+                self.currentTicket.pop(name)        
             else:
                 print('\nPlease pay for your ticket!')
                 self.payForParking(name)
+                self.leaveGarage(name)
         except:
-            print('\nYou do not currently have your car parked here! You are free to leave! Goodbye!')
+            print('\nYou do not currently have your car parked here!')
 
 # ----- Main Program ---------- #
 
@@ -57,15 +58,32 @@ class ParkingGarage():
             response = input('\nWould you like to get a ticket ("Get"), pay for current ticket ("Pay") or leave ("Leave"): ')
             if response.lower() == 'get':
                 name = input('\nWhat is your name? ').lower()
-                self.takeTicket(name)
+                if name in self.currentTicket:
+                    print("\nYou already have a ticket!")
+                    likeToPay = input('Would you like to pay? (Y/N) ').lower()
+                    if likeToPay == 'y':
+                        self.payForParking(name)
+                        readyToLeave = input("\nAre you ready to leave as well? (Y/N) ").lower()
+                        if readyToLeave == 'y':
+                            self.leaveGarage(name)
+                        elif readyToLeave == 'n':
+                            print("\nYour ticket has been paid, so you are free to leave whenever! Just type 'Leave' at the main console!")     
+                        else:
+                            print('Invalid response! Try again!')
+                    elif likeToPay == 'n':
+                        print("\nOk! See you soon! Don't forget to pay!")
+                    else:
+                        print("Invalid Input! Please enter either 'Y' or 'N'")
+                else:
+                    self.takeTicket(name)
             elif response.lower() == 'pay':
-                response2 = input("\nReady to Leave? (Yes/No): ")
-                if response2.lower() == 'yes':
+                response2 = input("\nReady to Leave? (Y/N): ")
+                if response2.lower() == 'y':
                     name = input('\nWhat is your name? ').lower()
                     self.payForParking(name)
                     self.leaveGarage(name)
                     continue
-                if response2.lower() == 'no':
+                if response2.lower() == 'n':
                     print("\nOk, see you soon!")
                     continue
                 else:
